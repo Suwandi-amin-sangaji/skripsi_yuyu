@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Klasifikasi Obat</title>
+    <meta
+      name="description"
+      content="Snap is a beautiful Bootstrap 4 template for multipurpose landing pages."
+    />
+
+    <!--Inter UI font-->
+    <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet" />
+
+    <!--vendors styles-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"
+    />
+
+    <!-- Bootstrap CSS / Color Scheme -->
+
+    <link
+      rel="stylesheet"
+      href="  {{ url_for('static', filename='css/default.css') }}"
+      id="theme-color"
+    />
+
+    <style>
+  
+
+
+      @media screen and (min-width: 601px) {
+       
+
+        .image-upload img {
+          width: 80px;
+          cursor: pointer;
+        }
+
+        #upload-web {
+          display: block;
+        }
+
+        #upload-mobile {
+          display: none;
+        }
+
+        .classify-button {
+          border: 2px;
+          background: none;
+          background-color: rgb(94, 208, 233);
+          color: #232a34;
+          font-size: large;
+          font-weight: bold;
+          width: 250px;
+          padding: 10px;
+          border-radius-top-right: 5px;
+          -moz-border-radius-top-right: 5px;
+          -webkit-border-radius-top-right: 5px;
+          border-radius-bottom-right: 5px;
+          -moz-border-radius-bottom-right: 5px;
+          -webkit-border-radius-bottom-right: 5px;
+          cursor: pointer;
+        }
+
+        #logo-img {
+          height: 140px;
+          width: 580px;
+        }
+      }
+
+      @media screen and (max-width: 600px) {
+       
+
+        .image-upload img {
+          width: 40px;
+          cursor: pointer;
+        }
+
+        #upload-web {
+          display: none;
+        }
+
+        #upload-mobile {
+          display: block;
+        }
+
+        .classify-button {
+          border: 0px;
+          background: none;
+          background-color: rgb(94, 208, 233);
+          color: #232a34;
+          font-size: small;
+          font-weight: bold;
+          width: 195px;
+          padding: 10px;
+          border-radius-top-right: 5px;
+          -moz-border-radius-top-right: 5px;
+          -webkit-border-radius-top-right: 5px;
+          border-radius-bottom-right: 5px;
+          -moz-border-radius-bottom-right: 5px;
+          -webkit-border-radius-bottom-right: 5px;
+          cursor: pointer;
+        }
+
+        #logo-img {
+          height: 120px;
+          width: 360px;
+        }
+      }
+      .classy_frame {
+        position: relative;
+        display: block;
+        border: solid;
+        border-color: rgb(113, 112, 109);;
+        border-radius: 7px;
+        overflow: hidden;
+        box-shadow: none;
+        transform: scale(0.98) translateY(5px);
+        padding-top: 1%;
+        margin-bottom: 2%;
+      }
+      /* .classy_frame:hover {
+        box-shadow: 0px 20px 30px rgb(63, 62, 60);;
+        transition: all ease 0.4s;
+      } */
+
+      hr {
+        border: 6px solid #232a34;
+        border-radius: 5px;
+        background-color: rgb(63, 62, 60);;
+      }
+
+      .image-upload > input {
+        display: none;
+      }
+
+      #loading {
+        background: #ffffff
+          url("{{ url_for('static', filename='images/loading-loader.gif') }}")
+          no-repeat center center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 9999999;
+        display: none;
+      }
+
+      @media screen and (max-width: 300px) {
+        #loading {
+        background: #ffffff
+          url("{{ url_for('static', filename='images/loading-loader.gif') }}")
+          no-repeat center center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 9999999;
+        display: none;
+      }
+      }
+
+    </style>
+  </head>
+  <body>
+    <!--hero header-->
+    <section class="py-5 py-md-7" id="home">
+      <div class="container">
+        <div class="row">
+          <div
+            class="col-md-6 my-md-auto mb-5 mb-md-0 text-center text-md-left"
+          >
+            <span class="text-uppercase text-muted small-xl">WELLCOME</span>
+            <h1 class="display-4 mt-2 mb-5">Klasifikasi Obat Deep Learning.</h1>
+            <a
+              href="#prediksi"
+              class="btn btn-primary d-inline-flex flex-row align-items-center"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8.356 5H7.01L5 13h1.028l.464-1.875h2.316L9.26 13h1.062Zm-1.729 5.322L7.644 5.95h.045l.984 4.373ZM11.238 13V5h1v8Zm.187 1H4V4h10v4.78a5.504 5.504 0 0 1 4-.786V6h-2V4a2.006 2.006 0 0 0-2-2h-2V0h-2v2H8V0H6v2H4a2.006 2.006 0 0 0-2 2v2H0v2h2v2H0v2h2v2a2.006 2.006 0 0 0 2 2h2v2h2v-2h2v2h2v-1.992A5.547 5.547 0 0 1 11.425 14Zm2.075-.5A3.5 3.5 0 1 1 17 17a3.499 3.499 0 0 1-3.5-3.5ZM17 19c-2.336 0-7 1.173-7 3.5V24h14v-1.5c0-2.328-4.664-3.5-7-3.5Z"/></svg>
+              Mulai Classify
+            </a>
+          </div>
+          <div class="col-md-6 play-wrapper">
+            <img
+              src="{{ url_for('static', filename='images/obat.png') }}"
+              class="img-fluid d-block mx-auto"
+              alt="MacBook"
+            />
+            <div class="play d-flex flex-row align-item-center show-video">
+              <em class="icon" data-feather="play"></em>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<section id="prediksi">
+    <div class="container">
+      <br>
+      <div class="row">
+        <div class="col-md-6 classy_frame" style="padding-top: 0%;">
+          <center><h3 style="text-transform: capitalize;">Classify Your medicine</h3></center>
+          <img id="preview" src="{{ url_for('static', filename = 'images/bg.png') }}" height="400px" width="100%" title = "client pic">
+          
+          <center>
+            <br>
+            <div class="image-upload">
+              <p style="color:rgb(63, 62, 60);" id="upload-web">Click the image upload icon below to upload a image.</p style="color:rgb(63, 62, 60);;"">
+              <p style="color:rgb(63, 62, 60);" id="upload-mobile">Click the camera icon below to click a image.</p style="color:rgb(63, 62, 60);;"">
+              
+              <label for="file">
+                  <img id="upload-web" src="{{ url_for('static', filename = 'images/upload.png') }}"/>
+                  <img id="upload-mobile" src="{{ url_for('static', filename = 'images/camera.png') }}"/>
+    
+              </label>
+              <input type="file" name="file" id="file" onchange="previewImage()">
+            </div>
+    
+            <!-- <audio id="obat-audio">
+              <source {{ url_for('static', filename = 'paper.mp3') }} type="audio/mp3">
+            </audio> -->
+    
+            <br>
+            <button class="classify-button btn btn-primary" onclick="classifyWaste()">Classify</button>
+          </center>
+          <br>
+        </div>
+    
+        <div class="col-md-6 classy_frame" style="padding-top: 0%;" id="about">
+          <center><h3 style="text-transform: capitalize;">Result</h3></center>
+          <h4>
+            
+          </h4>
+        </div>
+      </div>
+    </div>
+  </section>
+    <!--footer / contact-->
+    <footer class="mt-5 mb-4">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 my-auto text-center text-md-left">
+            &copy; 2023 Yuyu
+          </div>
+          <div class="col-md-4 text-center">
+            <ul
+              class="list-inline social social-white-alt social-rounded social-sm mb-0"
+            >
+              <li class="list-inline-item">
+                <a href=""><i class="fa fa-facebook"></i></a>
+              </li>
+              <li class="list-inline-item">
+                <a href=""><i class="fa fa-twitter"></i></a>
+              </li>
+              <li class="list-inline-item">
+                <a href=""><i class="fa fa-google-plus"></i></a>
+              </li>
+              <li class="list-inline-item">
+                <a href=""><i class="fa fa-dribbble"></i></a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-3 text-center text-md-right mb-0">
+            <ul class="list-inline">
+              <li class="list-inline-item"><a href="https://github.com/Suwandi-amin-sangaji" target="_blank">Developer</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-12 text-muted text-center small">
+            &copy; 2023 Yuyu - All Rights Reserved
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!--video section-->
+    <section class="video-wrapper">
+      <div class="video-close" id="video-close">
+        <em data-feather="x" class="icon"></em>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 mx-auto my-auto">
+            <div class="embed-responsive embed-responsive-16by9">
+              <iframe
+              class="embed-responsive-item allowfullscreen" 
+              height="415"
+              width="100%" 
+              src="https://www.youtube.com/embed/x769gFb0vks" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--scroll to top-->
+    <div class="scroll-top">
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </div>
+
+
+      <!-- Modal -->
+      <div
+      class="modal fade"
+      id="errorPopup"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div
+          class="modal-content classy_frame"
+          style="background-color: #f8f8f8"
+        >
+          <div class="modal-header">
+            <p
+              class="modal-title"
+              id="errorTitle"
+              style="color: rgb(98, 97, 95); font-size: large"
+            >
+              Modal title
+            </p>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              style="color: rgb(90, 103, 249); font-size: large"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p
+              style="color: rgb(94, 92, 90); font-size: medium"
+              id="errorMessage"
+              style="color: rgb(87, 86, 83)"
+            ></p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              style="background-color: rgb(90, 103, 249);; color: #0b2438"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="loading">
+      <h3 style="text-align: center">
+        Tunggu sebentar, AI sedang mengklasifikasikan...
+      </h3>
+    </div>
+
+
+    <script>
+      var imgData;
+      var loading = document.getElementById("loading");
+      // var whatif = document.getElementById("what-if");
+      // var recyclingvideos = document.getElementById("recycling-videos");
+    
+      // whatif.style.display = "none";
+      // recyclingvideos.style.display = "none";
+      
+      function previewImage(){
+          
+        var file = document.getElementById("file").files;
+        if(file.length>0){
+          var fileName = file[0].name;
+          var allowed_extensions = new Array("jpeg", "jpg","png");
+          var file_extension = fileName.split('.').pop().toLowerCase(); 
+    
+          if(allowed_extensions[0] == file_extension || allowed_extensions[1] == file_extension || allowed_extensions[2] == file_extension){
+            var imgObj = document.getElementById("preview");
+            var fileReader = new FileReader();
+    
+            fileReader.onload = function(event){
+              document.getElementById("preview").setAttribute("src", event.target.result);
+              imgData = event.target.result;
+            };
+    
+            fileReader.readAsDataURL(file[0]);
+          }
+          else{
+            document.getElementById("file").value = "";
+            document.getElementById("errorTitle").innerHTML = "Error - Only Image File Acceptable";
+            document.getElementById("errorMessage").innerHTML = "We only accept image with .jpeg .jpg or .png extensions.";
+            $("#errorPopup").modal("show");
+    
+          }
+        }
+      }
+    
+      function classifyWaste() {
+      var file = document.getElementById("file").files;
+      if (file.length > 0) {
+        loading.style.display = "block";
+    
+        var form_data = new FormData();
+        form_data.append("file", document.getElementById("file").files[0]);
+        $.ajax({
+          url: "classifywaste", // point to server-side URL
+          dataType: "json", // what to expect back from server
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: form_data,
+          type: "post",
+          success: function (data) {
+            var predicted_value = data["predicted_value"];
+            var details = data["details"];
+  
+    
+            about.innerHTML =
+              "<center><h3> This medicine is <b>" +
+              predicted_value + "</b>" +
+              "</b></h3></center><h4 class='justify-content-center'>" +
+              details +
+              "</h4>";
+            loading.style.display = "none";
+    
+            if (predicted_value === "Ambroxol Tablet") {
+              var audio = new Audio("{{ url_for('static', filename = 'sound/1.mp3') }}");
+              audio.play();
+            } else if (predicted_value === "Diapet Kapsul") {
+              var audio = new Audio("{{ url_for('static', filename = 'sound/2.mp3') }}");
+              audio.play();
+            } else if (predicted_value === "Flamar 50 Tablet") {
+              var audio = new Audio("{{ url_for('static', filename = 'sound/3.mp3') }}");
+              audio.play();
+            } else if (predicted_value === "Folavit Tablet") {
+              var audio = new Audio("{{ url_for('static', filename = 'sound/4.mp3') }}");
+              audio.play();
+            } else if (predicted_value === "Laxing Kapsul") {
+              var audio = new Audio("{{ url_for('static', filename = 'sound/5.mp3') }}");
+              audio.play();
+            } else if (predicted_value === "Meftormin Tablet") {
+              var audio = new Audio("{{ url_for('static', filename = 'sound/6.mp3') }}");
+              audio.play();
+            } else if (predicted_value === "Omeprazole Kapsul") {
+              var audio = new Audio("{{ url_for('static', filename = 'sound/7.mp3') }}");
+              audio.play();
+            } else if (predicted_value === "Ranitidine Tablet") {
+              var audio = new Audio("{{ url_for('static', filename = 'sound/8.mp3') }}");
+              audio.play();
+            } else if (predicted_value === "Sangobion Kapsul") {
+              var audio = new Audio("{{ url_for('static', filename = 'sound/9.mp3') }}");
+              audio.play();
+            } else if (predicted_value === "Simcobal Kapsul") {
+              var audio = new Audio("{{ url_for('static', filename = 'sound/10.mp3') }}");
+              audio.play();
+            } else  {
+              var audio = new Audio("{{ url_for('static', filename = 'sound/not_found.mp3') }}");
+              audio.play();
+            }
+          },
+        });
+      } else {
+        document.getElementById("errorTitle").innerHTML = "Error - Image not uploaded";
+        document.getElementById("errorMessage").innerHTML =
+          "Please upload image of your medicine";
+        $("#errorPopup").modal("show");
+      }
+    }
+    </script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.5.0/feather.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <!-- {{ url_for('static', filename='css/default.css') }} -->
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+  </body>
+</html>
