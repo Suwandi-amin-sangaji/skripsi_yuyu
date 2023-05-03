@@ -1,9 +1,11 @@
 from flask import Flask, request, render_template, redirect, jsonify
 # this is use for url_for() working inside javascript which is help us to navigate the url
 from flask_jsglue import JSGlue
+
 import util
 import os
 from werkzeug.utils import secure_filename
+from jinja2 import escape
 
 application = Flask(__name__)
 
