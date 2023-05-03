@@ -1,5 +1,6 @@
 import tensorflow as tf
 import numpy as np
+from keras.optimizers import Adam
 
 model = None
 output_class = ['Ambroxol Tablet', 'Diapet Kapsul', 'Flamar 50 Tablet', 'Folavit Tablet', 'Laxing Kapsul',
@@ -40,7 +41,9 @@ data = {
 
 def load_artifacts():
     global model
-    model = tf.keras.models.load_model("model/yuyumodel.h5")
+    custom_objects = {'Adam': Adam}
+    model = tf.keras.models.load_model("model/yuyumodel.h5", custom_objects=custom_objects)
+    # model = tf.keras.models.load_model()
 
 
 def classify_waste(image_path):
