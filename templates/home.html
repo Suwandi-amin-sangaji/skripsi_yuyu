@@ -176,6 +176,10 @@
       }
       }
 
+      #details {
+      text-align: justify;
+    }
+
     </style>
   </head>
   <body>
@@ -231,22 +235,14 @@
               </label>
               <input type="file" name="file" id="file" onchange="previewImage()">
             </div>
-    
-            <!-- <audio id="obat-audio">
-              <source {{ url_for('static', filename = 'paper.mp3') }} type="audio/mp3">
-            </audio> -->
-    
             <br>
             <button class="classify-button btn btn-primary" onclick="classifyWaste()">Classify</button>
           </center>
           <br>
         </div>
     
-        <div class="col-md-6 classy_frame" style="padding-top: 0%;" id="about">
+        <div class="col-md-6 classy_frame text-justify" style="padding-top: 0%;" id="about">
           <center><h3 style="text-transform: capitalize;">Result</h3></center>
-          <h4>
-            
-          </h4>
         </div>
       </div>
     </div>
@@ -432,13 +428,12 @@
             var predicted_value = data["predicted_value"];
             var details = data["details"];
   
-    
             about.innerHTML =
               "<center><h3> This medicine is <b>" +
               predicted_value + "</b>" +
-              "</b></h3></center><h4 class='justify-content-center'>" +
+              "</b></h3></center><p>" +
               details +
-              "</h4>";
+              "</p>";
             loading.style.display = "none";
     
             if (predicted_value === "Ambroxol Tablet") {
