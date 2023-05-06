@@ -41,7 +41,7 @@ data = {
 
 def load_artifacts():
     global model
-    model = tf.keras.models.load_model()
+    model = tf.keras.models.load_model("yuyumodel.h5")
 
 
 def classify_waste(image_path):
