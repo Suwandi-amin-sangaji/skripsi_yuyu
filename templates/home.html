@@ -236,7 +236,7 @@
               <input type="file" name="file" id="file" onchange="previewImage()">
             </div>
             <br>
-            <button class="classify-button btn btn-primary" onclick="classifyWaste()">Classify</button>
+            <button class="classify-button btn btn-primary" onclick="obat()">Classify</button>
           </center>
           <br>
         </div>
@@ -279,8 +279,8 @@
           </div>
         </div>
         <div class="row mt-4">
-          <div class="col-12 text-muted text-center small">
-            &copy; 2023 Yuyu - All Rights Reserved
+          <div class="col-12 text-muted text-center small"><a href="https://sorongdev.com" target="_blank">
+            &copy; 2023 Sorongdev.com - All Rights Reserved</a>
           </div>
         </div>
       </div>
@@ -408,8 +408,20 @@
           }
         }
       }
+
+      // Fungsi untuk mengubah teks menjadi suara
+      function speakText(text) {
+        const speech = new SpeechSynthesisUtterance();
+        speech.text = text;
+        speech.volume = 1;
+        speech.rate = 1;
+        speech.pitch = 1;
+        speech.lang = "id-ID";
+        window.speechSynthesis.speak(speech);
+      }
+ 
     
-      function classifyWaste() {
+      function obat() {
       var file = document.getElementById("file").files;
       if (file.length > 0) {
         loading.style.display = "block";
@@ -417,7 +429,7 @@
         var form_data = new FormData();
         form_data.append("file", document.getElementById("file").files[0]);
         $.ajax({
-          url: "classifywaste", // point to server-side URL
+          url: "obat", // point to server-side URL
           dataType: "json", // what to expect back from server
           cache: false,
           contentType: false,
@@ -427,49 +439,53 @@
           success: function (data) {
             var predicted_value = data["predicted_value"];
             var details = data["details"];
+            var accuracy = data["accuracy"];
+            // Mendapatkan nilai teks dari variabel "details"
+            var detailsText = data["details"];
   
             about.innerHTML =
               "<center><h3> This medicine is <b>" +
-              predicted_value + "</b>" +
+              predicted_value + " </b> " + accuracy + "%" + 
               "</b></h3></center><p>" +
-              details +
+              detailsText +
               "</p>";
             loading.style.display = "none";
+            speakText(detailsText);
     
-            if (predicted_value === "Ambroxol Tablet") {
-              var audio = new Audio("{{ url_for('static', filename = 'sound/1.mp3') }}");
-              audio.play();
-            } else if (predicted_value === "Diapet Kapsul") {
-              var audio = new Audio("{{ url_for('static', filename = 'sound/2.mp3') }}");
-              audio.play();
-            } else if (predicted_value === "Flamar 50 Tablet") {
-              var audio = new Audio("{{ url_for('static', filename = 'sound/3.mp3') }}");
-              audio.play();
-            } else if (predicted_value === "Folavit Tablet") {
-              var audio = new Audio("{{ url_for('static', filename = 'sound/4.mp3') }}");
-              audio.play();
-            } else if (predicted_value === "Laxing Kapsul") {
-              var audio = new Audio("{{ url_for('static', filename = 'sound/5.mp3') }}");
-              audio.play();
-            } else if (predicted_value === "Meftormin Tablet") {
-              var audio = new Audio("{{ url_for('static', filename = 'sound/6.mp3') }}");
-              audio.play();
-            } else if (predicted_value === "Omeprazole Kapsul") {
-              var audio = new Audio("{{ url_for('static', filename = 'sound/7.mp3') }}");
-              audio.play();
-            } else if (predicted_value === "Ranitidine Tablet") {
-              var audio = new Audio("{{ url_for('static', filename = 'sound/8.mp3') }}");
-              audio.play();
-            } else if (predicted_value === "Sangobion Kapsul") {
-              var audio = new Audio("{{ url_for('static', filename = 'sound/9.mp3') }}");
-              audio.play();
-            } else if (predicted_value === "Simcobal Kapsul") {
-              var audio = new Audio("{{ url_for('static', filename = 'sound/10.mp3') }}");
-              audio.play();
-            } else  {
-              var audio = new Audio("{{ url_for('static', filename = 'sound/not_found.mp3') }}");
-              audio.play();
-            }
+            // if (predicted_value === "Ambroxol Tablet") {
+            //   var audio = new Audio("{{ url_for('static', filename = 'sound/1.mp3') }}");
+            //   audio.play();
+            // } else if (predicted_value === "Diapet Kapsul") {
+            //   var audio = new Audio("{{ url_for('static', filename = 'sound/2.mp3') }}");
+            //   audio.play();
+            // } else if (predicted_value === "Flamar 50 Tablet") {
+            //   var audio = new Audio("{{ url_for('static', filename = 'sound/3.mp3') }}");
+            //   audio.play();
+            // } else if (predicted_value === "Folavit Tablet") {
+            //   var audio = new Audio("{{ url_for('static', filename = 'sound/4.mp3') }}");
+            //   audio.play();
+            // } else if (predicted_value === "Laxing Kapsul") {
+            //   var audio = new Audio("{{ url_for('static', filename = 'sound/5.mp3') }}");
+            //   audio.play();
+            // } else if (predicted_value === "Meftormin Tablet") {
+            //   var audio = new Audio("{{ url_for('static', filename = 'sound/6.mp3') }}");
+            //   audio.play();
+            // } else if (predicted_value === "Omeprazole Kapsul") {
+            //   var audio = new Audio("{{ url_for('static', filename = 'sound/7.mp3') }}");
+            //   audio.play();
+            // } else if (predicted_value === "Ranitidine Tablet") {
+            //   var audio = new Audio("{{ url_for('static', filename = 'sound/8.mp3') }}");
+            //   audio.play();
+            // } else if (predicted_value === "Sangobion Kapsul") {
+            //   var audio = new Audio("{{ url_for('static', filename = 'sound/9.mp3') }}");
+            //   audio.play();
+            // } else if (predicted_value === "Simcobal Kapsul") {
+            //   var audio = new Audio("{{ url_for('static', filename = 'sound/10.mp3') }}");
+            //   audio.play();
+            // } else  {
+            //   var audio = new Audio("{{ url_for('static', filename = 'sound/not_found.mp3') }}");
+            //   audio.play();
+            // }
           },
         });
       } else {

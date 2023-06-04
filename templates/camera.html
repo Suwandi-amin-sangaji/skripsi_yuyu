@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-time Camera Classification</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Real-time Camera Classification</h1>
+    <video id="video" width="640" height="480" autoplay></video>
+    <canvas id="canvas" width="640" height="480" style="display: none;"></canvas>
+    <div id="result"></div>
+
+    <script>
+        $(document).ready(function () {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function (stream) {
+                        var video = document.getElementById("video");
+                        video.srcObject = stream;
+                        video.play();
+                        setInterval(classifyImage, 1000); // Klasifikasi setiap 1 detik
+                    })
+                    .catch(function (error) {
+                        console.error("Error accessing the camera: ", error);
+                    });
+            }
+        });
+
+        function classifyImage() {
+            var video = document.getElementById("video");
+            var canvas = document.getElementById("canvas");
+            var context = canvas.getContext("2d");
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            var imageData = canvas.toDataURL("image/png");
+
+            $.ajax({
+                url: "/obat",
+                type: "POST",
+                data: { image_data: imageData },
+                success: function (response) {
+                    $("#result").text(response.result);
+                },
+                error: function (error) {
+                    console.error("Error during classification: ", error);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
