@@ -9,6 +9,7 @@
     <video id="video" width="640" height="480" autoplay></video>
     <canvas id="canvas" width="640" height="480" style="display: none;"></canvas>
     <div id="result"></div>
+    <button id="capture-btn">Capture</button>
 
     <script>
         $(document).ready(function () {
@@ -18,7 +19,6 @@
                         var video = document.getElementById("video");
                         video.srcObject = stream;
                         video.play();
-                        setInterval(classifyImage, 1000); // Klasifikasi setiap 1 detik
                     })
                     .catch(function (error) {
                         console.error("Error accessing the camera: ", error);
@@ -46,6 +46,27 @@
                 }
             });
         }
+
+        // Fungsi untuk menangkap gambar dari kamera
+        function captureImage() {
+            var video = document.getElementById("video");
+            var canvas = document.getElementById("canvas");
+            var context = canvas.getContext("2d");
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            var image = new Image();
+            image.src = canvas.toDataURL("image/png");
+
+            // Tampilkan gambar yang diambil dalam elemen lain jika diperlukan
+            // Contoh: document.getElementById("captured-image").src = image.src;
+
+            // Lakukan klasifikasi gambar yang telah diambil
+            classifyImage();
+        }
+
+        // Tambahkan event listener untuk tombol "Capture"
+        var captureButton = document.getElementById("capture-btn");
+        captureButton.addEventListener("click", captureImage);
     </script>
 </body>
 </html>

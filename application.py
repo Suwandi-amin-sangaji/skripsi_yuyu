@@ -14,6 +14,7 @@ from werkzeug.utils import secure_filename
 import cv2
 import base64
 import numpy as np
+import tensorflow as tf
 
 application = Flask(__name__)
 
@@ -29,6 +30,28 @@ util.load_artifacts()
 @application.route("/")
 def home():
     return render_template("home.html")
+
+def load_model():
+    global model
+    model = tf.keras.models.load_model("yuyumodel.h5")
+
+def classify_image(image):
+    global model, output_class
+    # Preprocess the image
+    img = tf.image.decode_image(image, channels=3)
+    img = tf.image.resize(img, [150, 150])
+    img = img / 255.0
+    img = np.expand_dims(img, axis=0)
+
+    # Perform prediction
+    prediction = model.predict(img)
+    predicted_class_index = np.argmax(prediction)
+    predicted_class = output_class[predicted_class_index]
+    confidence = prediction[0][predicted_class_index] * 100
+    confidence = round(confidence, 2)
+
+    # Return the predicted class and confidence
+    return predicted_class, confidence
 
 # camera
 @application.route("/camera")
